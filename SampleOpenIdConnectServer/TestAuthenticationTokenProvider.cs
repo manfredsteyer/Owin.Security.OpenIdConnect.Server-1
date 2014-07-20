@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Microsoft.Owin.Security.Infrastructure;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace SampleOpenIdConnectServer {
     /// <summary>
@@ -13,7 +14,9 @@ namespace SampleOpenIdConnectServer {
     public class TestAuthenticationTokenProvider : AuthenticationTokenProvider {
         private ConcurrentDictionary<string, string> keys = new ConcurrentDictionary<string, string>();
 
-        public override void Create(AuthenticationTokenCreateContext context) {
+        public override async Task CreateAsync(AuthenticationTokenCreateContext context)
+        {
+            await Task.Delay(1000);
             string token = Guid.NewGuid().ToString();
             keys[token] = context.SerializeTicket();
             context.SetToken(token);
